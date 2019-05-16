@@ -17,6 +17,18 @@ app.all('/hello', (req, res) => res.send('Hello World!'));
 app.all('/bye', (req, res) => res.send('Bye Bye!'));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
+app.get('/taco',(req,res)=>{
+    res.status(418).send ("pastor")
+});
+
+app.patch('/quesadilla',(req,res)=>{
+    res.status(401).send ("con queso")
+});
+
+app.post('/agua',(req,res)=>{
+    res.status(266).send ("de jamaica")
+});
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
 
