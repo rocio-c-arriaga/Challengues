@@ -29,6 +29,7 @@ app.all('*', (req,res,next) => {
 
 app.post('/movies', (req,res)=> {
     console.log(req.body)
+    console.log(req.cookies);
 
     if (req.body.movie && req.body.director){
         movies.push (req.body),
