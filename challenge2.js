@@ -12,7 +12,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const app = express();
 const port = 3000;
 const privateKey = "funkydance!"
@@ -41,15 +41,16 @@ app.post('/movies', (req, res) => {
     }
 });
 
-app.post('/auth/singIN', (request, response) => {
-    if (!(request.body.user && request.body.pass)) {
-        response.status(400).send('INGRESAR usuario y contraseña');
+app.post('/auth/singin', (req, res) => {
+    if (!(req.body.user && req.body.pass)) {
+        res.status(400).send('INGRESAR usuario y contraseña');
+        console.log ('req.body, req.body');
     }
-    jwt.sign({ user: request.body.user, theme: 'black' }, privateKey, function (err, token) {
+    jwt.sign({ user: req.body.user, theme: 'black' }, privateKey, function (err, token) {
         if (err) {
-            response.send(500).end();
+            res.send(500).end();
         } else {
-            response.status(200).send({ token: token })
+            res.status(200).send({ token: token })
         }
     });
 });
@@ -57,19 +58,21 @@ app.post('/auth/singIN', (request, response) => {
 app.use((req, res, next) => {
     jwt.verify(req.headers.authorization, privateKey, function (err, decoded) {
         if (err) {
-            res.status(500).end('aqui')
+            res.status(500).end('aqui tengo dudas')
         } else {
             console.log(decoded)
             // checar ese usuario en la base datos a ver si existe
+            next()
         }
     });
+})
 
-    app.get('/continuar', (req, res) => {
-        res.send('bienvenido!');
-    })
+app.get('/continuar', (req, res) => {
+    res.send('bienvenido!');
+})
 
 
-    app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
 
 /*app.all('/hello', (req, res) => res.send('Hello World!'));
